@@ -7,7 +7,7 @@ window = tkinter.Tk()
 # 设置窗口名称
 window.title('calculator')
 # 设置窗口大小
-window.geometry('395x675')
+window.geometry('395x675+860+260')
 # 设置窗口背景颜色
 window.config(background='#000000')
 
@@ -35,7 +35,11 @@ def press_number(number):
     if current_number.get() == '0':
         current_number.set(number)
     elif len(current_number.get()) <= MAX_SHOW_LEN:
-        current_number.set(current_number.get() + number)
+        if IS_CALC:
+            current_number.set('')
+            current_number.set(current_number.get() + number)
+        else:
+            current_number.set(current_number.get() + number)
 
 
 # 按下小数点
@@ -63,24 +67,46 @@ def press_operator(sign):
         STORAGE.append(current_number.get())
         STORAGE.append(sign)
         IS_CALC = True
-        change_button_style(sign)
+        change_operator_button_style(sign)
     elif sign == '=':
         STORAGE.append(current_number.get())
         result = eval(''.join(STORAGE))
         current_number.set(str(result))
+        STORAGE.clear()
+
+
+# 修改运算符按钮样式
+def change_operator_button_style(sign):
+    if IS_CALC:
+        if sign == '/':
+            button1_4 = tkinter.Button(
+                window, text='/', font=('firacode', 23), bg='#ffffff', fg='#efa53c', activebackground='#ffffff', activeforeground='#efa53c', command=lambda: press_operator('/'))
+            button1_4.place(x=300, y=200, width=80, height=80)
+        elif sign == '*':
+            button2_4 = tkinter.Button(
+                window, text='*', font=('firacode', 23), bg='#ffffff', fg='#efa53c', activebackground='#ffffff', activeforeground='#efa53c', command=lambda: press_operator('*'))
+            button2_4.place(x=300, y=295, width=80, height=80)
+        elif sign == '-':
+            button3_4 = tkinter.Button(
+                window, text='-', font=('firacode', 23), bg='#ffffff', fg='#efa53c', activebackground='#ffffff', activeforeground='#efa53c', command=lambda: press_operator('-'))
+            button3_4.place(x=300, y=390, width=80, height=80)
+        elif sign == '+':
+            button4_4 = tkinter.Button(
+                window, text='+', font=('firacode', 23), bg='#ffffff', fg='#efa53c', activebackground='#ffffff', activeforeground='#efa53c', command=lambda: press_operator('+'))
+            button4_4.place(x=300, y=485, width=80, height=80)
 
 
 # 设置按钮
 button1_1 = tkinter.Button(
-    window, text='AC', font=('firacode', 23), bg='#a5a5a5', command=lambda: press_operator('AC'))
+    window, text='AC', font=('firacode', 23), bg='#a5a5a5', fg='#000000', activebackground='#a5a5a5', activeforeground='#000000', command=lambda: press_operator('AC'))
 button1_1.place(x=15, y=200, width=80, height=80)
 
 button1_2 = tkinter.Button(
-    window, text='+/-', font=('firacode', 23), bg='#a5a5a5', command=lambda: press_operator('+/-'))
+    window, text='+/-', font=('firacode', 23), bg='#a5a5a5', fg='#000000', activebackground='#a5a5a5', activeforeground='#000000', command=lambda: press_operator('+/-'))
 button1_2.place(x=110, y=200, width=80, height=80)
 
 button1_3 = tkinter.Button(
-    window, text='%', font=('firacode', 23), bg='#a5a5a5', command=lambda: press_operator('%'))
+    window, text='%', font=('firacode', 23), bg='#a5a5a5', fg='#000000', activebackground='#a5a5a5', activeforeground='#000000', command=lambda: press_operator('%'))
 button1_3.place(x=205, y=200, width=80, height=80)
 
 button1_4 = tkinter.Button(
@@ -88,63 +114,63 @@ button1_4 = tkinter.Button(
 button1_4.place(x=300, y=200, width=80, height=80)
 
 button2_1 = tkinter.Button(
-    window, text='7', font=('firacode', 23), bg='#333333', fg='#ffffff', command=lambda: press_number('7'))
+    window, text='7', font=('firacode', 23), bg='#333333', fg='#ffffff', activebackground='#333333', activeforeground='#ffffff', command=lambda: press_number('7'))
 button2_1.place(x=15, y=295, width=80, height=80)
 
 button2_2 = tkinter.Button(
-    window, text='8', font=('firacode', 23), bg='#333333', fg='#ffffff', command=lambda: press_number('8'))
+    window, text='8', font=('firacode', 23), bg='#333333', fg='#ffffff', activebackground='#333333', activeforeground='#ffffff', command=lambda: press_number('8'))
 button2_2.place(x=110, y=295, width=80, height=80)
 
 button2_3 = tkinter.Button(
-    window, text='9', font=('firacode', 23), bg='#333333', fg='#ffffff', command=lambda: press_number('9'))
+    window, text='9', font=('firacode', 23), bg='#333333', fg='#ffffff', activebackground='#333333', activeforeground='#ffffff', command=lambda: press_number('9'))
 button2_3.place(x=205, y=295, width=80, height=80)
 
 button2_4 = tkinter.Button(
-    window, text='*', font=('firacode', 23), bg='#efa53c', fg='#ffffff', command=lambda: press_operator('*'))
+    window, text='*', font=('firacode', 23), bg='#efa53c', fg='#ffffff', activebackground='#efa53c', activeforeground='#ffffff', command=lambda: press_operator('*'))
 button2_4.place(x=300, y=295, width=80, height=80)
 
 button3_1 = tkinter.Button(
-    window, text='4', font=('firacode', 23), bg='#333333', fg='#ffffff', command=lambda: press_number('4'))
+    window, text='4', font=('firacode', 23), bg='#333333', fg='#ffffff', activebackground='#333333', activeforeground='#ffffff', command=lambda: press_number('4'))
 button3_1.place(x=15, y=390, width=80, height=80)
 
 button3_2 = tkinter.Button(
-    window, text='5', font=('firacode', 23), bg='#333333', fg='#ffffff', command=lambda: press_number('5'))
+    window, text='5', font=('firacode', 23), bg='#333333', fg='#ffffff', activebackground='#333333', activeforeground='#ffffff', command=lambda: press_number('5'))
 button3_2.place(x=110, y=390, width=80, height=80)
 
 button3_3 = tkinter.Button(
-    window, text='6', font=('firacode', 23), bg='#333333', fg='#ffffff', command=lambda: press_number('6'))
+    window, text='6', font=('firacode', 23), bg='#333333', fg='#ffffff', activebackground='#333333', activeforeground='#ffffff', command=lambda: press_number('6'))
 button3_3.place(x=205, y=390, width=80, height=80)
 
 button3_4 = tkinter.Button(
-    window, text='-', font=('firacode', 23), bg='#efa53c', fg='#ffffff', command=lambda: press_operator('-'))
+    window, text='-', font=('firacode', 23), bg='#efa53c', fg='#ffffff', activebackground='#efa53c', activeforeground='#ffffff', command=lambda: press_operator('-'))
 button3_4.place(x=300, y=390, width=80, height=80)
 
 button4_1 = tkinter.Button(
-    window, text='3', font=('firacode', 23), bg='#333333', fg='#ffffff', command=lambda: press_number('3'))
+    window, text='3', font=('firacode', 23), bg='#333333', fg='#ffffff', activebackground='#333333', activeforeground='#ffffff', command=lambda: press_number('3'))
 button4_1.place(x=15, y=485, width=80, height=80)
 
 button4_2 = tkinter.Button(
-    window, text='2', font=('firacode', 23), bg='#333333', fg='#ffffff', command=lambda: press_number('2'))
+    window, text='2', font=('firacode', 23), bg='#333333', fg='#ffffff', activebackground='#333333', activeforeground='#ffffff', command=lambda: press_number('2'))
 button4_2.place(x=110, y=485, width=80, height=80)
 
 button4_3 = tkinter.Button(
-    window, text='1', font=('firacode', 23), bg='#333333', fg='#ffffff', command=lambda: press_number('1'))
+    window, text='1', font=('firacode', 23), bg='#333333', fg='#ffffff', activebackground='#333333', activeforeground='#ffffff', command=lambda: press_number('1'))
 button4_3.place(x=205, y=485, width=80, height=80)
 
 button4_4 = tkinter.Button(
-    window, text='+', font=('firacode', 23), bg='#efa53c', fg='#ffffff', command=lambda: press_operator('+'))
+    window, text='+', font=('firacode', 23), bg='#efa53c', fg='#ffffff', activebackground='#efa53c', activeforeground='#ffffff', command=lambda: press_operator('+'))
 button4_4.place(x=300, y=485, width=80, height=80)
 
 button5_1 = tkinter.Button(window, text='0', font=(
-    'firacode', 23), bg='#333333', fg='#ffffff', command=lambda: press_number('0'))
+    'firacode', 23), bg='#333333', fg='#ffffff', activebackground='#333333', activeforeground='#ffffff', command=lambda: press_number('0'))
 button5_1.place(x=15, y=580, width=175, height=80)
 
 button5_2 = tkinter.Button(window, text='.', font=(
-    'firacode, 23'), bg='#333333', fg='#ffffff', command=lambda: press_decimal_point())
+    'firacode, 23'), bg='#333333', fg='#ffffff', activebackground='#333333', activeforeground='#ffffff', command=lambda: press_decimal_point())
 button5_2.place(x=205, y=580, width=80, height=80)
 
 button5_3 = tkinter.Button(window, text='=', font=(
-    'firacode, 23'), bg='#efa53c', fg='#ffffff', command=lambda: press_operator('='))
+    'firacode, 23'), bg='#efa53c', fg='#ffffff', activebackground='#efa53c', activeforeground='#ffffff', command=lambda: press_operator('='))
 button5_3.place(x=300, y=580, width=80, height=80)
 
 
